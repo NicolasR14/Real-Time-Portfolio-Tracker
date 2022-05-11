@@ -1,0 +1,24 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.27.2",
+    "crypto": "^1.0.1",
+    "express": "^4.18.1",
+    "express-graphql": "^0.12.0",
+    "mathjs": "^10.5.1",
+    "mongoose": "^6.3.1",
+    "node-fetch": "^3.2.4",
+    "nodemon": "^2.0.16"
+  },
+  "devDependencies": {
+    "@binance/connector": "^1.8.1"
+  }
+}

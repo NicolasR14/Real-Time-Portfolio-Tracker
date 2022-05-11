@@ -1,0 +1,16 @@
+.Collapsible__trigger {
+    display: flex;
+    justify-content: space-between;
+    align-items:center;
+    background-color:#0099ff;
+    width: 90vw;
+    padding: 1vw;
+  }
+  
+.Collapsible__trigger.is-open svg {
+transform: rotate(180deg);
+}
+
+.Collapsible__contentInner{
+    width: 90vw;
+}

@@ -1,0 +1,28 @@
+.settings{
+    display:flex;
+    flex-direction: column;
+    gap:2vh;
+}
+
+table {
+    color: #e6e7e6;
+    font-size: 16px;
+    width: 100%;
+    table-layout: fixed;
+    word-wrap:break-word;
+}
+
+
+.button{
+    background:none;
+    border: none;
+    display: flex;
+    flex-direction: row;
+    padding: 0;
+}
+
+.disabled{
+    opacity: 0.6;
+  cursor:not-allowed;
+  pointer-events: none;
+}
