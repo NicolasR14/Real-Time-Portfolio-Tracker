@@ -25,14 +25,12 @@ const spinTransition = {
 
 export default function CircleLoader() {
   return (
-    <div className="circle">
-      <div style={containerStyle}>
-        <motion.span
-          style={circleStyle}
-          animate={{ rotate: 360 }}
-          transition={spinTransition}
-        />
-      </div>
+    <div style={containerStyle}>
+      <motion.span
+        style={circleStyle}
+        animate={{ rotate: 360 }}
+        transition={spinTransition}
+      />
     </div>
   );
 }

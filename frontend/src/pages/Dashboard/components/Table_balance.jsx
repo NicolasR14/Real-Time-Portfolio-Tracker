@@ -1,16 +1,16 @@
 import React from "react";
 
-export default function BalanceTable(balances) {
+export default function BalanceTable({ balances }) {
   return (
-    <table className="balance_table">
-      <thead className="balance_t_h">
+    <table style={{ height: "100%" }}>
+      <thead style={{ fontSize: "1.8vw" }}>
         <tr>
           <th>Asset</th>
           <th>Amount</th>
           <th>Value</th>
         </tr>
       </thead>
-      <tbody>
+      <tbody style={{ fontSize: "1.25vw" }}>
         {balances.map((balance) => {
           return (
             <tr key={balance.asset}>

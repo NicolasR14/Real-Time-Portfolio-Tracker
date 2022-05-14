@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import axios from "axios";
 import API_key from "./API_key";
 import Addresses from "./Addresses";
 import Collaps from "./Collapsible";

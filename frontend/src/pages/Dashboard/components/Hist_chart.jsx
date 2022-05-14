@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Chart from "react-apexcharts";
 
-function HistChart(histo) {
+function HistChart({ histo }) {
   const state = {
     options: {
       colors: ["#0099ff"],
@@ -39,16 +39,15 @@ function HistChart(histo) {
     ],
   };
   return (
-    <div className="hist_chart">
-      <div className="row">
-        <div className="mixed-chart">
-          <Chart
-            options={state.options}
-            series={state.series}
-            type="line"
-            width="550"
-          />
-        </div>
+    <div className="row">
+      <div className="mixed-chart">
+        <Chart
+          options={state.options}
+          series={state.series}
+          type="line"
+          height="100%"
+          width="100%"
+        />
       </div>
     </div>
   );

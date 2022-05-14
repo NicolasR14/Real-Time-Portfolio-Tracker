@@ -83,7 +83,7 @@ async function get_glp_arbi_price() {
     });
 }
 
-function add_prices(balance_tot, prices, lp_list, dict_tickers) {
+function add_prices(balance_tot, prices, dict_tickers) {
   // var _balance = []
   const stablecoins = ["USDT", "BUSD", "MIM", "FRAX", "USDC"];
 
@@ -91,7 +91,6 @@ function add_prices(balance_tot, prices, lp_list, dict_tickers) {
   for (const source of balance_tot.balances) {
     var balance_source = [];
     var balance_stable = 0;
-    console.log(source);
     for (const balance of source.balances) {
       if (stablecoins.includes(balance.asset)) {
         balance_stable += balance.amount;

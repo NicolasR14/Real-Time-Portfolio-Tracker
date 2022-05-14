@@ -15,7 +15,7 @@ const Progress_bar = ({ bgcolor, progress, height }) => {
   };
 
   const progresstext = {
-    fontSize: 25,
+    fontSize: "1.8vw",
   };
 
   function get_text() {
