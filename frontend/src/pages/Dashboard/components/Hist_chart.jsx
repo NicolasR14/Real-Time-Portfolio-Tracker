@@ -9,8 +9,6 @@ function HistChart({ histo }) {
         foreColor: "white",
         toolbar: {
           show: true,
-          offsetX: 10,
-          offsetY: 0,
 
           tools: {
             download: true,
@@ -46,6 +44,12 @@ function HistChart({ histo }) {
       xaxis: {
         categories: histo.map((h) => new Date(h.day).getTime()),
         type: "datetime",
+      },
+
+      yaxis: {
+        labels: {
+          offsetX: -20,
+        },
       },
       stroke: {
         curve: "smooth",

@@ -16,6 +16,7 @@ function Balances() {
 
   function getBalance() {
     axios.get("http://localhost:3000/api/balance").then((response) => {
+      console.log(response);
       setTotalUsdValue(response.data.total_usd);
       setBalances(response.data.balances);
       setComposition(response.data.composition);
@@ -31,29 +32,26 @@ function Balances() {
   }, []);
 
   return (
-    <div className="Dashboard">
-      {status === 0 && (
+    <span>
+      {status === 0 ? (
         <div className="circle">
           <CircleLoader />
         </div>
-      )}
-      {status === 1 && (
-        <div className="balance">
-          <Table_balance balances={balances} />
+      ) : (
+        <div className="Dashboard">
+          <div className="balance">
+            <Table_balance balances={balances} />
+          </div>
+          <CompoChart series={composition} />
+          <div className="total_usd">
+            <Total_balance balance_total={inputTotalUsd} histo={histo} />
+          </div>
+          <div className="hist">
+            <HistChart histo={histo} />
+          </div>
         </div>
       )}
-      {status === 1 && <CompoChart series={composition} />}
-      {status === 1 && (
-        <div className="total_usd">
-          <Total_balance balance_total={inputTotalUsd} histo={histo} />
-        </div>
-      )}
-      {status === 1 && (
-        <div className="hist">
-          <HistChart histo={histo} />
-        </div>
-      )}
-    </div>
+    </span>
   );
 }
 export default Balances;

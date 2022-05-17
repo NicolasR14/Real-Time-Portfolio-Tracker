@@ -26,7 +26,11 @@ const Progress_bar = ({ bgcolor, progress, height }) => {
         <div style={Childdiv}></div>
       </div>
       <span
-        style={{ fontSize: "1.8vw", textAlign: "end", marginBottom: "3px" }}
+        style={{
+          fontSize: "1.28vw",
+          textAlign: "end",
+          marginBottom: "4px",
+        }}
       >{`${get_text()}`}</span>
     </div>
   );

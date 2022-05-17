@@ -1,23 +1,27 @@
 .App {
   background-color: #282c34;
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
+  min-width: 100vw;
+  min-height: 100vh;
 }
 
 .App-header{
   list-style-type: none;
   margin: 0;
   padding: 0;
-  top: 0;
+  position: fixed;
+  top:0;
+  left:0;
   width: 100%;
 }
 li{
   float: left;
+  font-size:larger;
 }
 li a {
   display: block;
@@ -27,10 +31,6 @@ li a {
   text-decoration: none;
 }
 
-.active {
-  background-color: #04AA6D;
-}
-
 .Content{
-  padding: 1em;
+  padding: 2em;
 }

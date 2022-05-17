@@ -16,14 +16,14 @@ let balance_tot = {
 
 async function fetchAll() {
   now = +new Date();
-  if (balance_tot.last_updated < now - 1000) {
+  if (balance_tot.last_updated < now - 60 * 1000) {
     balance_tot = {
       last_updated: now,
       balances: [],
     };
-    var defi;
-    var cefi;
-    return await Promise.all([
+    let defi;
+    let cefi;
+    const promises = await Promise.all([
       (defi = await get_all_balance_defi()),
       (cefi = await get_all_balance_cefi()),
       (manual = await get_man_balance()),
@@ -38,8 +38,9 @@ async function fetchAll() {
         balance_tot.balances
       );
       balance_tot.lp_list = _lp_list;
-      return add_prices(balance_tot, prices, dict_tickers);
+      add_prices(balance_tot, prices, dict_tickers);
     });
+    console.log("test");
   }
   return balance_tot;
 }
@@ -53,7 +54,7 @@ function mergeAll(_balance_tot) {
 }
 
 exports.getAllBalances = async (req, res, next) => {
-  await fetchAll()
+  fetchAll()
     .then(async (_balance_tot) => {
       const [total_usd, balances] = get_total_and_format(_balance_tot);
       const [composition, debt] = await get_composition(total_usd, balances);

@@ -2,9 +2,11 @@
     color: white;
     display: grid;
     height:80vh;
-    grid-template-columns: 30% 20% 49%;
+    min-height: 400px;
+    min-width: 900px;
+    grid-template-columns: 24% 22% 50%;
     grid-template-rows: 15% 50% 30%;
-    gap: 2% 0.5%;
+    gap: 0.5% 2%;
     flex-direction: column;
     align-items: center;
 }
@@ -14,8 +16,6 @@
     grid-row-start: 1;
     grid-row-end: 4;
     height:100%;
-    display: flex;
-    align-items: center;
 }
 
 .compo{
@@ -35,9 +35,9 @@
     grid-row:1;
     grid-column-start: 2;
     grid-column-end: 4;
+    overflow: auto;
 
 }
-
 
 .hist{
     grid-row-start: 2;
@@ -50,6 +50,6 @@
 
 .progress_bar{
     display: grid;
-    grid-template-columns: 70% 30%;
+    grid-template-columns: 80% 20%;
     align-items: center;
 }

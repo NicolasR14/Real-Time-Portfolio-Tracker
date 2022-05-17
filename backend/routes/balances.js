@@ -1,5 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const balancesCtrl = require("../controllers/balances");
-router.get("/", balancesCtrl.getAllBalances);
+const rateLimiter = require("../middlewares/rate_limit");
+
+router.get("/", rateLimiter, balancesCtrl.getAllBalances);
 module.exports = router;

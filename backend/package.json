@@ -13,6 +13,7 @@
     "crypto": "^1.0.1",
     "express": "^4.18.1",
     "express-graphql": "^0.12.0",
+    "express-rate-limit": "^6.4.0",
     "mathjs": "^10.5.1",
     "mongoose": "^6.3.1",
     "node-fetch": "^3.2.4",

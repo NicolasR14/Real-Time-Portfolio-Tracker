@@ -5,7 +5,7 @@ export default function BalanceTable({ balance_total, histo }) {
   const progress = (balance_total / ath_wallet) * 100;
   return (
     <span>
-      <div style={{ fontSize: "100%" }}>Total USD : {balance_total}$</div>
+      <div style={{ fontSize: "30px" }}>Total USD : {balance_total}$</div>
       <Progress_bar bgcolor="#0099ff" progress={progress} height={"50%"} />
     </span>
   );
