@@ -7,7 +7,24 @@ function HistChart({ histo }) {
       colors: ["#0099ff"],
       chart: {
         foreColor: "white",
+        toolbar: {
+          show: true,
+          offsetX: 10,
+          offsetY: 0,
+
+          tools: {
+            download: true,
+            selection: true,
+            zoom: true,
+            zoomin: true,
+            zoomout: true,
+            pan: true,
+            reset: true | '<img src="/static/icons/reset.png" width="20">',
+            customIcons: [],
+          },
+        },
       },
+
       grid: {
         show: true,
         xaxis: {
@@ -19,6 +36,10 @@ function HistChart({ histo }) {
           lines: {
             show: true,
           },
+        },
+        padding: {
+          left: 0,
+          right: 0,
         },
       },
 
@@ -39,17 +60,13 @@ function HistChart({ histo }) {
     ],
   };
   return (
-    <div className="row">
-      <div className="mixed-chart">
-        <Chart
-          options={state.options}
-          series={state.series}
-          type="line"
-          height="100%"
-          width="100%"
-        />
-      </div>
-    </div>
+    <Chart
+      options={state.options}
+      series={state.series}
+      type="line"
+      height="100%"
+      width="100%"
+    />
   );
 }
 

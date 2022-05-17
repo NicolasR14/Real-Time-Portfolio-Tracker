@@ -16,7 +16,7 @@ let balance_tot = {
 
 async function fetchAll() {
   now = +new Date();
-  if (balance_tot.last_updated < now - 600000) {
+  if (balance_tot.last_updated < now - 1000) {
     balance_tot = {
       last_updated: now,
       balances: [],

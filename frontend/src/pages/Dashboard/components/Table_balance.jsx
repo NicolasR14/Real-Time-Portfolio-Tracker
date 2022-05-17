@@ -3,7 +3,7 @@ import React from "react";
 export default function BalanceTable({ balances }) {
   return (
     <table style={{ height: "100%" }}>
-      <thead style={{ fontSize: "1.8vw" }}>
+      <thead style={{ fontSize: "1.8vw", verticalAlign: "text-top" }}>
         <tr>
           <th>Asset</th>
           <th>Amount</th>

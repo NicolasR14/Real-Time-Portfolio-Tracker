@@ -239,7 +239,7 @@ async function get_kucoin(cex) {
           throw Error("Error kc API");
         })
         .then((balances) => {
-          var _balances = [];
+          let _balances = [];
           for (const b of balances.filter((b) => b.balance > 0)) {
             _balances.push({
               asset: b.currency,
@@ -253,14 +253,56 @@ async function get_kucoin(cex) {
           return [];
         });
     }
-    //maybe implement kucoin borrowing
+    async get_liabilities() {
+      return await this.request("/v1/margin/borrow/outstanding")
+        .then((response) => {
+          if (response.data.code === "200000" && response.data.data) {
+            return response.data.data.items;
+          }
+          throw Error("Error kc API");
+        })
+        .then((balances) => {
+          let _balances = [];
+          for (const b of balances) {
+            _balances.push({
+              asset: b.currency,
+              amount: -parseFloat(b.liability),
+            });
+          }
+          return _balances;
+        });
+    }
+    async get_liabilities() {
+      return await this.request("/v1/margin/borrow/outstanding")
+        .then((response) => {
+          if (response.data.code === "200000" && response.data.data) {
+            return response.data.data.items;
+          }
+          throw Error("Error kc API");
+        })
+        .then((balances) => {
+          let _balances = [];
+          for (const b of balances) {
+            _balances.push({
+              asset: b.currency,
+              amount: -parseFloat(b.liability),
+            });
+          }
+          return _balances;
+        });
+    }
   }
   const kc = new KCRest(
     (key = API_key),
     (secret = API_secret),
     (passphrase = API_passphrase)
   );
-  return { cex: "KuCoin", balances: await kc.get_balance() };
+  return {
+    cex: "KuCoin",
+    balances: merge_lists(
+      await Promise.all([kc.get_balance(), kc.get_liabilities()])
+    ),
+  };
 }
 async function get_jm(cex) {
   const API_key = decrypt(cex.api_key);

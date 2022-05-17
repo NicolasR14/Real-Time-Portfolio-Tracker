@@ -14,10 +14,6 @@ const Progress_bar = ({ bgcolor, progress, height }) => {
     borderRadius: 10,
   };
 
-  const progresstext = {
-    fontSize: "1.8vw",
-  };
-
   function get_text() {
     return progress === 100
       ? "Wallet ATH!"
@@ -29,7 +25,9 @@ const Progress_bar = ({ bgcolor, progress, height }) => {
       <div style={Parentdiv}>
         <div style={Childdiv}></div>
       </div>
-      <span style={progresstext}>{`${get_text()}`}</span>
+      <span
+        style={{ fontSize: "1.8vw", textAlign: "end", marginBottom: "3px" }}
+      >{`${get_text()}`}</span>
     </div>
   );
 };
