@@ -1,0 +1,55 @@
+.Dashboard {
+    color: white;
+    display: grid;
+    height:80vh;
+    grid-template-columns: 30% 20% 49%;
+    grid-template-rows: 15% 50% 30%;
+    gap: 2% 0.5%;
+    flex-direction: column;
+    align-items: center;
+}
+
+.balance{
+    grid-column:1;
+    grid-row-start: 1;
+    grid-row-end: 4;
+    height:100%;
+    display: flex;
+    align-items: center;
+}
+
+.compo{
+    height:100%;
+    width:100%;
+    grid-column:2;
+    grid-row-start: 2;
+    grid-row-end: 3;
+    position: relative;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    
+}
+
+.total_usd{
+    grid-row:1;
+    grid-column-start: 2;
+    grid-column-end: 4;
+
+}
+
+
+.hist{
+    grid-row-start: 2;
+    grid-row-end: 4;
+    grid-column:3;
+    width: 100%;
+    height: 100%;
+}
+
+
+.progress_bar{
+    display: grid;
+    grid-template-columns: 70% 30%;
+    align-items: center;
+}
