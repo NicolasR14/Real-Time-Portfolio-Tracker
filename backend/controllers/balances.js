@@ -1,10 +1,10 @@
 const Histo = require("../models/Histo");
 const Contract = require("../models/Contract");
-const { get_all_balance_defi } = require("../src/defi");
-const { get_all_balance_cefi } = require("../src/cefi");
-const { get_man_balance } = require("../src/manual_balance");
-const { merge_lists, merge_balances } = require("../src/common_functions");
-const { get_prices, add_prices } = require("../src/prices");
+const { get_all_balance_defi } = require("./src/defi");
+const { get_all_balance_cefi } = require("./src/cefi");
+const { get_man_balance } = require("./src/manual_balance");
+const { merge_lists, merge_balances } = require("./src/common_functions");
+const { get_prices, add_prices } = require("./src/prices");
 const math = require("mathjs");
 const axios = require("axios");
 

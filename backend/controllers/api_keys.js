@@ -1,6 +1,6 @@
 const { parse } = require("mathjs");
 const API_key = require("../models/API_key");
-const { encrypt, decrypt } = require("../src/crypt");
+const { encrypt, decrypt } = require("./src/crypt");
 
 exports.createAPI_key = (req, res, next) => {
   try {
