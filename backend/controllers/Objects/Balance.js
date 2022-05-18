@@ -9,18 +9,18 @@ class Balance {
   constructor(balance_tot) {
     this.old_balance = { ...balance_tot };
     this.balance_tot = { ...balance_tot };
-    this.balance_tot.lp_list = [];
-    this.total_usd = 0;
     this.composition = [];
     this.debt = [];
   }
 
   async fetchAll() {
     const now = +new Date();
-    if (this.balance_tot.last_updated < now - 60 * 1000) {
+    if (this.balance_tot.last_updated < now - 5 * 60 * 1000) {
       this.balance_tot = {
         last_updated: now,
         balances: [],
+        lp_list: [],
+        total_usd: 0,
       };
       let defi;
       let cefi;
@@ -39,6 +39,7 @@ class Balance {
 
         let prices_accessor = new Prices();
         await prices_accessor.get_all_prices(this.balance_tot.balances);
+
         this.balance_tot.lp_list = prices_accessor.lp_list;
         this.balance_tot = prices_accessor.add_prices(this.balance_tot);
         this.get_total_and_format();
@@ -49,9 +50,10 @@ class Balance {
   get_total_and_format() {
     let merged_balance = this.mergeAll();
     for (const b of merged_balance) {
-      this.total_usd += b.usd_value;
+      this.balance_tot.total_usd += b.usd_value;
     }
-    this.total_usd = Math.round(this.total_usd * 100) / 100;
+    this.balance_tot.total_usd =
+      Math.round(this.balance_tot.total_usd * 100) / 100;
     for (let b of merged_balance) {
       b.amount = Math.round(b.amount * 100) / 100;
       b.usd_value = Math.round(b.usd_value * 100) / 100;
@@ -81,7 +83,6 @@ class Balance {
         ).toFixed(2);
       }
     }
-    console.log(this.balance_tot.balances);
   }
 
   async get_composition() {
@@ -115,17 +116,20 @@ class Balance {
     );
     let others = { asset: "Others", percentage: 0.0 };
     this.debt = this.composition.filter(
-      (a) => a.usd_value / this.total_usd < 0
+      (a) => a.usd_value / this.balance_tot.total_usd < 0
     );
     this.composition = this.composition
       .filter((a) => !this.debt.includes(a))
       .flatMap((a) => {
-        const percentage = a.usd_value / this.total_usd;
+        const percentage = a.usd_value / this.balance_tot.total_usd;
         if (percentage < 0.03) {
           others.percentage += percentage;
           return [];
         }
-        return { asset: a.asset, percentage: a.usd_value / this.total_usd };
+        return {
+          asset: a.asset,
+          percentage: a.usd_value / this.balance_tot.total_usd,
+        };
       });
     this.composition.push(others);
   }

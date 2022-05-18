@@ -1,7 +1,27 @@
 import React, { Component } from "react";
 import Chart from "react-apexcharts";
 
-function HistChart({ histo }) {
+function HistChart({ histo, select_value }) {
+  function get_data_value() {
+    switch (select_value) {
+      case "USD":
+        return {
+          name: "USD value",
+          data: histo.map((h) => h.balance),
+        };
+      case "ETH":
+        return {
+          name: "ETH value",
+          data: histo.map((h) => h.balance_eth),
+        };
+      case "BTC":
+        return {
+          name: "BTC value",
+          data: histo.map((h) => h.balance_btc),
+        };
+    }
+  }
+
   const state = {
     options: {
       colors: ["#0099ff"],
@@ -49,6 +69,9 @@ function HistChart({ histo }) {
       yaxis: {
         labels: {
           offsetX: -20,
+          formatter: (value) => {
+            return value.toFixed(2);
+          },
         },
       },
       stroke: {
@@ -56,17 +79,11 @@ function HistChart({ histo }) {
         width: 4,
       },
     },
-    series: [
-      {
-        name: "Wallet value",
-        data: histo.map((h) => h.balance),
-      },
-    ],
   };
   return (
     <Chart
       options={state.options}
-      series={state.series}
+      series={[get_data_value()]}
       type="line"
       height="100%"
       width="100%"

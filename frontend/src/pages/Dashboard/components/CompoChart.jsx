@@ -45,7 +45,7 @@ function CompoChart({ series }) {
               dx={dx}
               dy={dy}
               dominant-baseline="central"
-              text-anchor="middle"
+              textAnchor="middle"
               style={{
                 fill: "#ffffff",
                 fontSize: "5px",

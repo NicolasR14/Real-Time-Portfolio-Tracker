@@ -5,6 +5,7 @@ import HistChart from "./components/Hist_chart";
 import CompoChart from "./components/CompoChart";
 import Table_balance from "./components/Table_balance";
 import Total_balance from "./components/Total_balance";
+import Select from "./components/Select_bar";
 import axios from "axios";
 
 function Balances() {
@@ -47,7 +48,10 @@ function Balances() {
             <Total_balance balance_total={inputTotalUsd} histo={histo} />
           </div>
           <div className="hist">
-            <HistChart histo={histo} />
+            <HistChart histo={histo} select_value="ETH" />
+          </div>
+          <div className="select_slide">
+            <Select />
           </div>
         </div>
       )}

@@ -4,7 +4,7 @@
     height:80vh;
     min-height: 400px;
     min-width: 900px;
-    grid-template-columns: 24% 22% 50%;
+    grid-template-columns: 29% 20% 47%;
     grid-template-rows: 15% 50% 30%;
     gap: 0.5% 2%;
     flex-direction: column;
@@ -53,3 +53,10 @@
     grid-template-columns: 80% 20%;
     align-items: center;
 }
+
+.select_slide{
+    grid-column:2;
+    grid-row-start: 3;
+    grid-row-end: 4;
+}
+
