@@ -4,17 +4,17 @@ import Chart from "react-apexcharts";
 function HistChart({ histo, select_value }) {
   function get_data_value() {
     switch (select_value) {
-      case "USD":
+      case 0:
         return {
           name: "USD value",
           data: histo.map((h) => h.balance),
         };
-      case "ETH":
+      case 2:
         return {
           name: "ETH value",
           data: histo.map((h) => h.balance_eth),
         };
-      case "BTC":
+      case 3:
         return {
           name: "BTC value",
           data: histo.map((h) => h.balance_btc),

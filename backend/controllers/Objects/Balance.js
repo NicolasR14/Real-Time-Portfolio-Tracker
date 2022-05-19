@@ -114,7 +114,7 @@ class Balance {
         }
       })
     );
-    let others = { asset: "Others", percentage: 0.0 };
+    let others = { asset: "", percentage: 0.0 };
     this.debt = this.composition.filter(
       (a) => a.usd_value / this.balance_tot.total_usd < 0
     );
@@ -132,6 +132,7 @@ class Balance {
         };
       });
     this.composition.push(others);
+    this.composition.sort((a, b) => (a.percentage > b.percentage ? -1 : 1));
   }
 
   async get_glp_compo() {

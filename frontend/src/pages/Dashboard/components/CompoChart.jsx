@@ -58,9 +58,9 @@ function CompoChart({ series }) {
           labelStyle={defaultLabelStyle}
           labelPosition={68}
           lineWidth={15}
-          paddingAngle={15}
+          // paddingAngle={15}
           startAngle={-90}
-          rounded
+          // rounded
           onMouseOver={(_, index) => {
             setPercentageSelect(Math.round(data[index].value * 100) + "%");
             setHovered(index);
