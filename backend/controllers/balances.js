@@ -3,9 +3,14 @@ const LastBalance = require("../models/LastBalance");
 const Balance = require("./Objects/Balance");
 const Prices = require("./Objects/Prices");
 
+const prices_accessor = new Prices();
+
 exports.getAllBalances = async (req, res, next) => {
   let last_balance = await LastBalance.find();
-  let balance = new Balance(JSON.parse(JSON.stringify(last_balance[0])));
+  let balance = new Balance(
+    JSON.parse(JSON.stringify(last_balance[0])),
+    prices_accessor
+  );
   balance
     .fetchAll()
     .then(async () => {
@@ -41,15 +46,14 @@ exports.getAllBalances = async (req, res, next) => {
 async function createHisto(total_usd) {
   let today = new Date().setHours(0, 0, 0, 0);
   Histo.findOne({ day: today }).then(async (h) => {
-    let prices_accessor = new Prices();
-    let [bitcoin_price, ethereum_price] = [0, 0];
     await Promise.all([
-      (bitcoin_price = await prices_accessor.get_price_cg("bitcoin")),
-      (ethereum_price = await prices_accessor.get_price_cg("ethereum")),
+      await prices_accessor.get_price_cg("bitcoin"),
+      await prices_accessor.get_price_cg("ethereum"),
+      await prices_accessor.get_price_yf("US", "EURUSD=X"),
     ]);
-    let balance_eth = total_usd / ethereum_price.ethereum.usd;
-    let balance_btc = total_usd / bitcoin_price.bitcoin.usd;
-
+    let balance_eth = total_usd / prices_accessor.prices["ethereum"].usd;
+    let balance_btc = total_usd / prices_accessor.prices["bitcoin"].usd;
+    let balance_eur = total_usd / prices_accessor.prices["EURUSD=X"].usd;
     if (h) {
       Histo.updateOne(
         { day: today },
@@ -58,6 +62,7 @@ async function createHisto(total_usd) {
             balance: total_usd,
             balance_eth: balance_eth,
             balance_btc: balance_btc,
+            balance_eur: balance_eur,
           },
         }
       ).then(() => console.log("Historique du jour actualisé"));
@@ -67,6 +72,7 @@ async function createHisto(total_usd) {
         balance: total_usd,
         balance_eth: balance_eth,
         balance_btc: balance_btc,
+        balance_eur: balance_eur,
       });
       histo.save();
     }

@@ -9,6 +9,11 @@ function HistChart({ histo, select_value }) {
           name: "USD value",
           data: histo.map((h) => h.balance),
         };
+      case 1:
+        return {
+          name: "EUR value",
+          data: histo.map((h) => h.balance_eur),
+        };
       case 2:
         return {
           name: "ETH value",

@@ -6,10 +6,11 @@ const Prices = require("./Prices");
 const axios = require("axios");
 
 class Balance {
-  constructor(balance_tot) {
+  constructor(balance_tot, prices_accessor) {
     this.old_balance = { ...balance_tot };
     this.balance_tot = { ...balance_tot };
     this.composition = [];
+    this.prices_accessor = prices_accessor;
     this.debt = [];
   }
 
@@ -37,11 +38,10 @@ class Balance {
         }
         this.balance_tot.balances.push(manual);
 
-        let prices_accessor = new Prices();
-        await prices_accessor.get_all_prices(this.balance_tot.balances);
+        await this.prices_accessor.get_all_prices(this.balance_tot.balances);
 
-        this.balance_tot.lp_list = prices_accessor.lp_list;
-        this.balance_tot = prices_accessor.add_prices(this.balance_tot);
+        this.balance_tot.lp_list = this.prices_accessor.lp_list;
+        this.balance_tot = this.prices_accessor.add_prices(this.balance_tot);
         this.get_total_and_format();
       });
     }
