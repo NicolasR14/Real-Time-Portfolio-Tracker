@@ -10,8 +10,8 @@ class Balance {
     this.old_balance = { ...balance_tot };
     this.balance_tot = { ...balance_tot };
     this.composition = [];
+    this.evol_total = {};
     this.prices_accessor = prices_accessor;
-    this.debt = [];
   }
 
   async fetchAll() {
@@ -21,7 +21,12 @@ class Balance {
         last_updated: now,
         balances: [],
         lp_list: [],
-        total_usd: 0,
+        total: {
+          usd: 0,
+          eur: 0,
+          eth: 0,
+          btc: 0,
+        },
       };
       let defi;
       let cefi;
@@ -43,17 +48,35 @@ class Balance {
         this.balance_tot.lp_list = this.prices_accessor.lp_list;
         this.balance_tot = this.prices_accessor.add_prices(this.balance_tot);
         this.get_total_and_format();
+        await this.get_other_currencies_balance();
       });
     }
+  }
+
+  async get_other_currencies_balance() {
+    await Promise.all([
+      await this.prices_accessor.get_price_cg("bitcoin"),
+      await this.prices_accessor.get_price_cg("ethereum"),
+      await this.prices_accessor.get_price_yf("US", "EURUSD=X"),
+    ]);
+    this.balance_tot.total.eth =
+      this.balance_tot.total.usd / this.prices_accessor.prices["ethereum"].usd;
+    this.balance_tot.total.eth = this.balance_tot.total.eth.toFixed(2);
+    this.balance_tot.total.btc =
+      this.balance_tot.total.usd / this.prices_accessor.prices["bitcoin"].usd;
+    this.balance_tot.total.btc = this.balance_tot.total.btc.toFixed(3);
+    this.balance_tot.total.eur =
+      this.balance_tot.total.usd / this.prices_accessor.prices["EURUSD=X"].usd;
+    this.balance_tot.total.eur = this.balance_tot.total.eur.toFixed(2);
   }
 
   get_total_and_format() {
     let merged_balance = this.mergeAll();
     for (const b of merged_balance) {
-      this.balance_tot.total_usd += b.usd_value;
+      this.balance_tot.total.usd += b.usd_value;
     }
-    this.balance_tot.total_usd =
-      Math.round(this.balance_tot.total_usd * 100) / 100;
+    this.balance_tot.total.usd =
+      Math.round(this.balance_tot.total.usd * 100) / 100;
     for (let b of merged_balance) {
       b.amount = Math.round(b.amount * 100) / 100;
       b.usd_value = Math.round(b.usd_value * 100) / 100;
@@ -61,6 +84,8 @@ class Balance {
     merged_balance.sort((a, b) => (a.usd_value > b.usd_value ? -1 : 1));
     this.balance_tot.balances = merged_balance;
   }
+
+  async;
 
   mergeAll() {
     let merged_balance = [];
@@ -83,6 +108,14 @@ class Balance {
         ).toFixed(2);
       }
     }
+    this.evol_total.usd =
+      (this.balance_tot.total.usd / this.old_balance.total.usd - 1) * 100;
+    this.evol_total.eur =
+      (this.balance_tot.total.eur / this.old_balance.total.eur - 1) * 100;
+    this.evol_total.eth =
+      (this.balance_tot.total.eth / this.old_balance.total.eth - 1) * 100;
+    this.evol_total.btc =
+      (this.balance_tot.total.btc / this.old_balance.total.btc - 1) * 100;
   }
 
   async get_composition() {
@@ -115,22 +148,35 @@ class Balance {
       })
     );
     let others = { asset: "", percentage: 0.0 };
-    this.debt = this.composition.filter(
-      (a) => a.usd_value / this.balance_tot.total_usd < 0
-    );
-    this.composition = this.composition
-      .filter((a) => !this.debt.includes(a))
-      .flatMap((a) => {
-        const percentage = a.usd_value / this.balance_tot.total_usd;
-        if (percentage < 0.03) {
-          others.percentage += percentage;
-          return [];
-        }
+
+    let total_expo = this.balance_tot.total.usd;
+    this.composition.map((a) => {
+      if (a.usd_value < 0) {
+        total_expo += -a.usd_value;
+      }
+    });
+    console.log(total_expo);
+    this.composition = this.composition.flatMap((a) => {
+      const percentage = a.usd_value / total_expo;
+      if (percentage < 0.03 && percentage > 0) {
+        others.percentage += percentage;
+        return [];
+      }
+      if (percentage > -0.03 && percentage < 0) {
+        others.percentage += -percentage;
+        return [];
+      }
+      if (percentage < 0) {
         return {
-          asset: a.asset,
-          percentage: a.usd_value / this.balance_tot.total_usd,
+          asset: "-" + a.asset,
+          percentage: -percentage,
         };
-      });
+      }
+      return {
+        asset: a.asset,
+        percentage: percentage,
+      };
+    });
     this.composition.push(others);
     this.composition.sort((a, b) => (a.percentage > b.percentage ? -1 : 1));
   }

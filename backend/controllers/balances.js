@@ -17,14 +17,19 @@ exports.getAllBalances = async (req, res, next) => {
       balance.get_evolution();
       await Promise.all([
         balance.get_composition(),
-        createHisto(balance.balance_tot.total_usd),
+        createHisto(balance.balance_tot.total),
       ]);
 
       res.status(200).json({
-        total_usd: balance.balance_tot.total_usd,
+        total: {
+          usd: balance.balance_tot.total.usd,
+          eur: balance.balance_tot.total.eur,
+          eth: balance.balance_tot.total.eth,
+          btc: balance.balance_tot.total.btc,
+        },
         balances: balance.balance_tot.balances,
         composition: balance.composition,
-        debt: balance.debt,
+        evolution: balance.evol_total,
       });
       LastBalance.updateOne(
         {},
@@ -33,7 +38,12 @@ exports.getAllBalances = async (req, res, next) => {
             balances: balance.balance_tot.balances,
             last_updated: balance.balance_tot.last_updated,
             lp_list: balance.balance_tot.lp_list,
-            total_usd: balance.balance_tot.total_usd,
+            total: {
+              usd: balance.balance_tot.total.usd,
+              eur: balance.balance_tot.total.eur,
+              eth: balance.balance_tot.total.eth,
+              btc: balance.balance_tot.total.btc,
+            },
           },
         }
       ).then(() => console.log("LastBalance actualisée"));
@@ -43,36 +53,28 @@ exports.getAllBalances = async (req, res, next) => {
       res.status(400).json({ error });
     });
 };
-async function createHisto(total_usd) {
+async function createHisto(total) {
   let today = new Date().setHours(0, 0, 0, 0);
   Histo.findOne({ day: today }).then(async (h) => {
-    await Promise.all([
-      await prices_accessor.get_price_cg("bitcoin"),
-      await prices_accessor.get_price_cg("ethereum"),
-      await prices_accessor.get_price_yf("US", "EURUSD=X"),
-    ]);
-    let balance_eth = total_usd / prices_accessor.prices["ethereum"].usd;
-    let balance_btc = total_usd / prices_accessor.prices["bitcoin"].usd;
-    let balance_eur = total_usd / prices_accessor.prices["EURUSD=X"].usd;
     if (h) {
       Histo.updateOne(
         { day: today },
         {
           $set: {
-            balance: total_usd,
-            balance_eth: balance_eth,
-            balance_btc: balance_btc,
-            balance_eur: balance_eur,
+            balance: total.usd,
+            balance_eth: total.eth,
+            balance_btc: total.btc,
+            balance_eur: total.eur,
           },
         }
       ).then(() => console.log("Historique du jour actualisé"));
     } else {
       const histo = new Histo({
         day: today,
-        balance: total_usd,
-        balance_eth: balance_eth,
-        balance_btc: balance_btc,
-        balance_eur: balance_eur,
+        balance: total.usd,
+        balance_eth: total.eth,
+        balance_btc: total.btc,
+        balance_eur: total.eur,
       });
       histo.save();
     }

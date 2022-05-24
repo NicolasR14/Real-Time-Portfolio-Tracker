@@ -10,7 +10,7 @@ import axios from "axios";
 
 function Balances() {
   let [status, setStatus] = useState(0);
-  let [total_usd, setTotalUsdValue] = useState(0);
+  let [total, setTotalValue] = useState(0);
   let [balances, setBalances] = useState([]);
   let [composition, setComposition] = useState([]);
   let [histo, setHisto] = useState([]);
@@ -19,7 +19,7 @@ function Balances() {
   function getBalance() {
     axios.get("http://localhost:3000/api/balance").then((response) => {
       console.log(response);
-      setTotalUsdValue(response.data.total_usd);
+      setTotalValue(response.data.total);
       setBalances(response.data.balances);
       setComposition(response.data.composition);
       axios.get("http://localhost:3000/api/histo").then((hist) => {
@@ -46,7 +46,11 @@ function Balances() {
           </div>
           <CompoChart series={composition} />
           <div className="total_usd">
-            <Total_balance balance_total={total_usd} histo={histo} />
+            <Total_balance
+              balance_total={total}
+              histo={histo}
+              select_value={select_device}
+            />
           </div>
           <div className="hist">
             <HistChart histo={histo} select_value={select_device} />

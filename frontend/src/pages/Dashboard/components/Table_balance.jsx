@@ -1,8 +1,11 @@
 import React from "react";
 
 export default function BalanceTable({ balances }) {
-  function get_style_evol(evol) {
-    if (parseFloat(evol) < 0) {
+  function get_style_evol(balance) {
+    if (
+      parseFloat(balance.evol) < 0 ||
+      (balance.amount < 0 && parseFloat(balance.evol) > 0)
+    ) {
       return { textAlign: "right", color: "red" };
     }
     return { textAlign: "right", color: "green" };
@@ -24,7 +27,7 @@ export default function BalanceTable({ balances }) {
               <th>{balance.asset}</th>
               <td>{balance.amount}</td>
               <td style={{ textAlign: "right" }}>{balance.usd_value}$</td>
-              <td style={get_style_evol(balance.evol)}>{balance.evol}%</td>
+              <td style={get_style_evol(balance)}>{balance.evol}%</td>
             </tr>
           );
         })}

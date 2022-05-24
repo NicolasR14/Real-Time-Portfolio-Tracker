@@ -14,6 +14,17 @@ function CompoChart({ series }) {
     "#cbde1d",
     "#1dde81",
     "#debb1d",
+    "#2A8FF7",
+    "#68E497",
+    "#F6B042",
+    "#ED415E",
+    "#775DD0",
+    "#F17CB0",
+    "#2EBFBC",
+    "#3BB086",
+    "#cbde1d",
+    "#1dde81",
+    "#debb1d",
   ];
   const [hovered, setHovered] = useState(undefined);
   const [percentageSelected, setPercentageSelect] = useState("");
