@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Chart from "react-apexcharts";
+import "../../../styles/Hist.css";
 
 function HistChart({ histo, select_value }) {
   function get_data_value() {
@@ -29,6 +30,18 @@ function HistChart({ histo, select_value }) {
 
   const state = {
     options: {
+      tooltip: {
+        enabled: true,
+        custom: function ({ series, seriesIndex, dataPointIndex, w }) {
+          return (
+            '<div class="arrow_box">' +
+            "<span>" +
+            series[seriesIndex][dataPointIndex] +
+            "</span>" +
+            "</div>"
+          );
+        },
+      },
       colors: ["#0099ff"],
       chart: {
         foreColor: "white",
