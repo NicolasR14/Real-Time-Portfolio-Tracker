@@ -13,6 +13,8 @@ function Balances() {
   let [total, setTotalValue] = useState(0);
   let [balances, setBalances] = useState([]);
   let [composition, setComposition] = useState([]);
+  let [evolution, setEvolution] = useState(0);
+  let [debt, setDebt] = useState([]);
   let [histo, setHisto] = useState([]);
   let [select_device, setDevice] = useState(0);
 
@@ -21,7 +23,9 @@ function Balances() {
       console.log(response);
       setTotalValue(response.data.total);
       setBalances(response.data.balances);
+      setEvolution(response.data.evolution);
       setComposition(response.data.composition);
+      setDebt(response.data.debt);
       axios.get("http://localhost:3000/api/histo").then((hist) => {
         setHisto(hist.data);
       });
@@ -44,12 +48,14 @@ function Balances() {
           <div className="balance">
             <Table_balance balances={balances} />
           </div>
-          <CompoChart series={composition} />
+          <CompoChart series={composition} cSize="100%" />
+          <CompoChart series={debt} cSize="70%" />
           <div className="total_usd">
             <Total_balance
               balance_total={total}
               histo={histo}
               select_value={select_device}
+              evolution={evolution}
             />
           </div>
           <div className="hist">

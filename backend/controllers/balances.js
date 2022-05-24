@@ -30,6 +30,7 @@ exports.getAllBalances = async (req, res, next) => {
         balances: balance.balance_tot.balances,
         composition: balance.composition,
         evolution: balance.evol_total,
+        debt: balance.debt,
       });
       LastBalance.updateOne(
         {},

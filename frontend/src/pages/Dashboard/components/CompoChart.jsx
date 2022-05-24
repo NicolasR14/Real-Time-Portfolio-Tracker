@@ -1,7 +1,8 @@
+import { flexbox } from "@mui/system";
 import React, { useState, ComponentProps } from "react";
 import { PieChart } from "react-minimal-pie-chart";
 
-function CompoChart({ series }) {
+function CompoChart({ series, cSize }) {
   const COLORS = [
     "#2A8FF7",
     "#68E497",
@@ -28,6 +29,7 @@ function CompoChart({ series }) {
   ];
   const [hovered, setHovered] = useState(undefined);
   const [percentageSelected, setPercentageSelect] = useState("");
+  const [assetSelected, setAssetSelect] = useState("");
 
   let i = -1;
   const data = series.map((a) => {
@@ -45,27 +47,27 @@ function CompoChart({ series }) {
   };
 
   return (
-    <div className="compo">
+    <div className="compo" style={{ height: cSize, width: cSize }}>
       <div style={{ width: "100%", height: "100%" }}>
         <PieChart
           data={data}
-          label={({ x, y, dx, dy, dataEntry }) => (
-            <text
-              x={x}
-              y={y}
-              dx={dx}
-              dy={dy}
-              dominant-baseline="central"
-              textAnchor="middle"
-              style={{
-                fill: "#ffffff",
-                fontSize: "5px",
-                fontFamily: "sans-serif",
-              }}
-            >
-              {dataEntry.title}
-            </text>
-          )}
+          // label={({ x, y, dx, dy, dataEntry }) => (
+          //   <text
+          //     x={x}
+          //     y={y}
+          //     dx={dx}
+          //     dy={dy}
+          //     dominant-baseline="central"
+          //     textAnchor="middle"
+          //     style={{
+          //       fill: "#ffffff",
+          //       fontSize: "5px",
+          //       fontFamily: "sans-serif",
+          //     }}
+          //   >
+          //     {dataEntry.title}
+          //   </text>
+          // )}
           labelStyle={defaultLabelStyle}
           labelPosition={68}
           lineWidth={15}
@@ -74,20 +76,26 @@ function CompoChart({ series }) {
           // rounded
           onMouseOver={(_, index) => {
             setPercentageSelect(Math.round(data[index].value * 100) + "%");
+            setAssetSelect(data[index].title);
             setHovered(index);
           }}
           onMouseOut={() => {
             setHovered(undefined);
             setPercentageSelect("");
+            setAssetSelect("");
           }}
         />
       </div>
       <div
         style={{
           position: "absolute",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
         }}
       >
-        {percentageSelected}
+        <div>{percentageSelected}</div>
+        <div>{assetSelected}</div>
       </div>
     </div>
   );

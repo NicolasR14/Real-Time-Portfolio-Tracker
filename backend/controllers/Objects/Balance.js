@@ -10,6 +10,7 @@ class Balance {
     this.old_balance = { ...balance_tot };
     this.balance_tot = { ...balance_tot };
     this.composition = [];
+    this.debt = [];
     this.evol_total = {};
     this.prices_accessor = prices_accessor;
   }
@@ -147,30 +148,24 @@ class Balance {
         }
       })
     );
-    let others = { asset: "", percentage: 0.0 };
+    let others = { asset: "Others", percentage: 0.0 };
 
-    let total_expo = this.balance_tot.total.usd;
-    this.composition.map((a) => {
+    let total_usd_debt = this.balance_tot.total.usd;
+    for (const a of this.composition) {
       if (a.usd_value < 0) {
-        total_expo += -a.usd_value;
+        this.debt.push({ asset: a.asset, percentage: -a.usd_value });
+        total_usd_debt += -a.usd_value;
       }
-    });
-    console.log(total_expo);
+    }
+
     this.composition = this.composition.flatMap((a) => {
-      const percentage = a.usd_value / total_expo;
+      const percentage = a.usd_value / total_usd_debt;
       if (percentage < 0.03 && percentage > 0) {
         others.percentage += percentage;
         return [];
       }
-      if (percentage > -0.03 && percentage < 0) {
-        others.percentage += -percentage;
-        return [];
-      }
       if (percentage < 0) {
-        return {
-          asset: "-" + a.asset,
-          percentage: -percentage,
-        };
+        return [];
       }
       return {
         asset: a.asset,
@@ -178,7 +173,16 @@ class Balance {
       };
     });
     this.composition.push(others);
+
+    this.debt.push({
+      asset: "Propre",
+      percentage: this.balance_tot.total.usd,
+    });
+    for (const a of this.debt) {
+      a.percentage = a.percentage / total_usd_debt;
+    }
     this.composition.sort((a, b) => (a.percentage > b.percentage ? -1 : 1));
+    this.debt.sort((a, b) => (a.percentage > b.percentage ? 1 : -1));
   }
 
   async get_glp_compo() {
