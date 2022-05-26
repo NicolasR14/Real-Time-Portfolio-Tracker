@@ -1,6 +1,6 @@
-const { get_all_balance_defi } = require("../src/defi");
-const { get_all_balance_cefi } = require("../src/cefi");
-const { get_man_balance } = require("../src/manual_balance");
+const { get_all_balance_defi } = require("../crypto/defi");
+const { get_all_balance_cefi } = require("../crypto/cefi");
+const { get_man_balance } = require("../crypto/manual_balance");
 const { merge_lists, merge_balances } = require("../src/common_functions");
 const Prices = require("./Prices");
 const axios = require("axios");
