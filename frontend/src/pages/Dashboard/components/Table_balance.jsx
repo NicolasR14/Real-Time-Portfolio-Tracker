@@ -26,7 +26,7 @@ export default function BalanceTable({ balances }) {
             <tr key={balance.asset}>
               <th>{balance.asset}</th>
               <td>{balance.amount}</td>
-              <td style={{ textAlign: "right" }}>{balance.usd_value}$</td>
+              <td style={{ textAlign: "right" }}>{balance.value}$</td>
               <td style={get_style_evol(balance)}>{balance.evol}%</td>
             </tr>
           );

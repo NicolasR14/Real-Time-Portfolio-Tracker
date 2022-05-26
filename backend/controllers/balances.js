@@ -1,20 +1,27 @@
 const Histo = require("../models/Histo");
 const LastBalance = require("../models/LastBalance");
-const Balance = require("./Objects/Balance");
+const BalanceCrypto = require("./Objects/BalanceCrypto");
 const Prices = require("./Objects/Prices");
 
 const prices_accessor = new Prices();
 
 exports.getAllBalances = async (req, res, next) => {
   let last_balance = await LastBalance.find();
-  let balance = new Balance(
+  let balance = new BalanceCrypto(
     JSON.parse(JSON.stringify(last_balance[0])),
     prices_accessor
   );
   balance
-    .fetchAll()
+    .getBalance()
     .then(async () => {
+      await prices_accessor.get_all_prices_crypto(balance.balance_tot.balances);
+      balance.balance_tot = prices_accessor.add_prices(balance.balance_tot);
+
+      balance.get_total_and_format();
+      await balance.get_other_currencies_balance();
+
       balance.get_evolution();
+
       await Promise.all([
         balance.get_composition(),
         createHisto(balance.balance_tot.total),
@@ -44,6 +51,7 @@ exports.getAllBalances = async (req, res, next) => {
               eur: balance.balance_tot.total.eur,
               eth: balance.balance_tot.total.eth,
               btc: balance.balance_tot.total.btc,
+              main: balance.balance_tot.total.main,
             },
           },
         }

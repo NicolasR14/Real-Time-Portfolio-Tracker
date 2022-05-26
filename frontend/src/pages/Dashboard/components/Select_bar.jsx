@@ -17,12 +17,12 @@ const style = {
   fontFamily: "system-ui, regular",
 };
 
-export default function Select({ selFct }) {
+export default function Select({ selFct, values }) {
   const handleChange = (event, newValue) => {
     selFct(newValue);
     setAlignment(newValue);
   };
-  const [alignment, setAlignment] = React.useState("usd");
+  const [alignment, setAlignment] = React.useState(values[0].value);
   return (
     <ThemeProvider theme={theme}>
       <ToggleButtonGroup
@@ -32,21 +32,13 @@ export default function Select({ selFct }) {
         exclusive
         onChange={handleChange}
       >
-        <ToggleButton value="usd" style={style}>
-          $
-        </ToggleButton>
-        <ToggleButton value="eur" style={style}>
-          €
-        </ToggleButton>
-        <ToggleButton value="eth" style={style}>
-          ETH
-        </ToggleButton>
-        <ToggleButton value="btc" style={style}>
-          BTC
-        </ToggleButton>
-        <ToggleButton value="***" style={style}>
-          ***
-        </ToggleButton>
+        {values.map((v) => {
+          return (
+            <ToggleButton value={v.value} style={style}>
+              {v.value2}
+            </ToggleButton>
+          );
+        })}
       </ToggleButtonGroup>
     </ThemeProvider>
   );

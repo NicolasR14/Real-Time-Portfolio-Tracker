@@ -9,6 +9,7 @@ const lastBalanceSchema = mongoose.Schema({
     eth: { type: Number, required: true },
     eur: { type: Number, required: true },
     btc: { type: Number, required: true },
+    main: { type: Number, required: true },
   },
 });
 

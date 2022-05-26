@@ -13,14 +13,14 @@ export default function BalanceTable({
   let [evol, setEvol] = useState("");
 
   function get_style_evol() {
-    if (evolution.usd < 0) {
+    console.log(evol);
+    if (evol < 0) {
       return { color: "red" };
     }
     return { color: "green" };
   }
 
   function get_infos() {
-    setEvol(evolution.usd.toFixed(2) + "%");
     console.log(progress);
     switch (select_value) {
       case "eur":
@@ -29,6 +29,7 @@ export default function BalanceTable({
           (balance_total.eur / Math.max(...histo.map((h) => h.balance_eur))) *
             100
         );
+        setEvol(evolution.eur.toFixed(2));
         return;
       case "eth":
         setTotal(balance_total.eth + " $ETH");
@@ -36,6 +37,7 @@ export default function BalanceTable({
           (balance_total.eth / Math.max(...histo.map((h) => h.balance_eth))) *
             100
         );
+        setEvol(evolution.eth.toFixed(2));
         return;
       case "btc":
         setTotal(balance_total.btc + " $BTC");
@@ -43,18 +45,21 @@ export default function BalanceTable({
           (balance_total.btc / Math.max(...histo.map((h) => h.balance_btc))) *
             100
         );
+        setEvol(evolution.btc.toFixed(2));
         return;
       case "***":
         setTotal("***");
         setProgress(
           (balance_total.usd / Math.max(...histo.map((h) => h.balance))) * 100
         );
+        setEvol(evolution.usd.toFixed(2));
         return;
       default:
         setTotal(balance_total.usd + " $");
         setProgress(
           (balance_total.usd / Math.max(...histo.map((h) => h.balance))) * 100
         );
+        setEvol(evolution.usd.toFixed(2));
         return;
     }
   }
@@ -66,7 +71,7 @@ export default function BalanceTable({
     <span>
       <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
         <div style={{ fontSize: "30px" }}>Total : {total}</div>
-        <div style={get_style_evol()}>{evol}</div>
+        <div style={get_style_evol()}>{evol}%</div>
       </div>
 
       <Progress_bar bgcolor="#0099ff" progress={progress} height={"50%"} />
