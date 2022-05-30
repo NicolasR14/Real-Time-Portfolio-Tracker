@@ -14,7 +14,7 @@ class Balance {
     this.evol_total = {};
     this.prices_accessor = prices_accessor;
     this.main_currency = main_currency;
-    this.delay = 0.2 * 60 * 1000;
+    this.delay = 5 * 60 * 1000;
   }
   async getBalance() {
     const now = +new Date();
@@ -76,6 +76,7 @@ class Balance {
   }
 
   get_total_and_format() {
+    this.balance_tot.total.main = 0;
     for (const b of this.balance_tot.balances) {
       this.balance_tot.total.main += b.value;
     }

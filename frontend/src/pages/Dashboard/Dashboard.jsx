@@ -22,11 +22,11 @@ function Balances() {
   function getBalance() {
     axios.get("http://localhost:3000/api/balance").then((response) => {
       console.log(response);
-      setTotalValue(response.data.total);
-      setBalances(response.data.balances);
-      setEvolution(response.data.evolution);
-      setComposition(response.data.composition);
-      setDebt(response.data.debt);
+      setTotalValue(response.data.crypto.total);
+      setBalances(response.data.crypto.balances);
+      setEvolution(response.data.crypto.evolution);
+      setComposition(response.data.crypto.composition);
+      setDebt(response.data.crypto.debt);
       axios.get("http://localhost:3000/api/histo").then((hist) => {
         setHisto(hist.data);
       });
