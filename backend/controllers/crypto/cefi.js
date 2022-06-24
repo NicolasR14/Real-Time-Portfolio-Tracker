@@ -179,7 +179,7 @@ async function get_ftx(cex) {
           throw Error("Error ftx API");
         })
         .then((balances) => {
-          var _balances = [];
+          let _balances = [];
           for (const b of balances.filter(
             (b) => b.usdValue > 0.1 && b.total > 0
           )) {

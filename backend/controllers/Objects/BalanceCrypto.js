@@ -30,6 +30,7 @@ class BalanceCrypto extends Balance {
     for (const b of this.balance_tot.balances) {
       merged_balance = merge_lists([merged_balance, b.balances]);
     }
+    
     this.balance_tot.balances = merged_balance;
   }
 

@@ -27,7 +27,6 @@ async function get_crypto_balance() {
   await balance.getBalance().then(async () => {
     await prices_accessor.get_all_prices_crypto(balance.balance_tot.balances);
     balance.balance_tot = prices_accessor.add_prices(balance.balance_tot);
-
     balance.get_total_and_format();
     await balance.get_other_currencies_balance();
 

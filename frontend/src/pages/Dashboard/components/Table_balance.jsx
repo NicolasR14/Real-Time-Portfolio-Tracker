@@ -3,8 +3,8 @@ import React from "react";
 export default function BalanceTable({ balances }) {
   function get_style_evol(balance) {
     if (
-      (parseFloat(balance.evol) < 0 && balance.amount > 0) ||
-      (balance.amount < 0 && parseFloat(balance.evol) > 0)
+      (parseFloat(balance.evol) < 0 && balance.value > 0) ||
+      (balance.value < 0 && parseFloat(balance.evol) > 0)
     ) {
       return { textAlign: "right", color: "red" };
     }
