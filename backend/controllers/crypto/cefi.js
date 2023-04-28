@@ -10,7 +10,7 @@ async function get_all_balance_cefi() {
   const balances = await API_key.find()
     .then((keys) => {
       return keys.filter((k) =>
-        ["binance", "ftx", "kucoin", "jm"].includes(k.name)
+        ["binance", "jm"].includes(k.name)
       );
     })
     .then(async (cexs) => {
@@ -250,25 +250,6 @@ async function get_kucoin(cex) {
         .catch((error) => {
           console.log(error);
           return [];
-        });
-    }
-    async get_liabilities() {
-      return await this.request("/v1/margin/borrow/outstanding")
-        .then((response) => {
-          if (response.data.code === "200000" && response.data.data) {
-            return response.data.data.items;
-          }
-          throw Error("Error kc API");
-        })
-        .then((balances) => {
-          let _balances = [];
-          for (const b of balances) {
-            _balances.push({
-              asset: b.currency,
-              amount: -parseFloat(b.liability),
-            });
-          }
-          return _balances;
         });
     }
     async get_liabilities() {

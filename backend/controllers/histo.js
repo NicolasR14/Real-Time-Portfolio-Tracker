@@ -4,6 +4,8 @@ exports.getAllHisto = (req, res, next) => {
   Histo.find()
     .then((histos) => {
       histos.sort((a, b) => (a.day > b.day ? 1 : -1));
+      
+      console.log(histos)
       res.status(200).json(histos);
     })
     .catch((error) => {

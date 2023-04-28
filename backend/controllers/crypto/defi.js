@@ -79,9 +79,10 @@ async function get_all_balance_defi() {
       supported_chains.map(async (chain) => {
         const addresses_chain = addresses.filter((a) => a.chain === chain);
         for (const address of addresses_chain) {
-          if (chain === "solana") {
-            balances_chain.push(await get_solana_balance(address));
+          if (chain === "solana" || chain === "avalanche") {
+            //balances_chain.push(await get_solana_balance(address));
           } else {
+
             await Contract.find({ chain: chain }).then(async (contracts) => {
               balances_chain.push(await get_evm_balance(address, contracts));
             });
@@ -195,7 +196,6 @@ async function get_evm_balance(address, contracts) {
       }, 200)
     );
   }
-
   return { address: address.address, chain: address.chain, balances: balances };
 }
 
